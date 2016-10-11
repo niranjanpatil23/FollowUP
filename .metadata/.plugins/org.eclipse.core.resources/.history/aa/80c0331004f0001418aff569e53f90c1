@@ -1,0 +1,234 @@
+package com.example.timemanager;
+
+import java.util.ArrayList;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class FldDial1 extends Activity implements OnClickListener {
+	Database db =  new Database(this);
+	EditText field_name;
+	EditText target;
+
+	String fu;
+	String intent_field_name;
+	String intent_field_unit;
+	String intent_field_target;
+	Button done;
+	Spinner fld_unit;
+	int check;
+	String spnr[] = new String[3];
+	ArrayList<String[]> Fields = new ArrayList<String[]>();
+	BaseAdapter b;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_fld_dial1);
+		
+		
+	
+		
+		Intent getin = getIntent();
+		check = getin.getIntExtra("Check", 0);
+		if(check == 1)
+		{
+			intent_field_name = getin.getStringExtra("Field Name");
+			intent_field_unit = getin.getStringExtra("Field Unit");
+			intent_field_target = getin.getStringExtra("Field Target");
+			field_name = (EditText)findViewById(R.id.editText_entfld);
+			field_name.setText(intent_field_name);
+			target = (EditText)findViewById(R.id.editText_trgt);
+			target.setText(intent_field_target);
+		}
+
+		spnr[0] = "am-pm";
+		spnr[1] = "hours";
+		spnr[2] =  "units";
+		field_name = (EditText)findViewById(R.id.editText_entfld);
+
+		target = (EditText)findViewById(R.id.editText_trgt);
+		done = (Button)findViewById(R.id.btn_done);
+		done.setOnClickListener(this);
+		fld_unit = (Spinner)findViewById(R.id.spnr2);
+
+
+
+		b =new BaseAdapter() {
+
+			@Override
+			public View getView(int pos, View convertView, 
+
+					ViewGroup parent) {
+				// TODO Auto-generated method stub
+				LayoutInflater lin = 
+
+						getLayoutInflater();
+				View v = lin.inflate
+
+						(R.layout.xmll_for_spinner,null);
+				TextView t = (TextView) 
+
+						v.findViewById(R.id.txtvw);
+				t.setText(spnr[pos]);
+				return v;
+
+			}
+
+			@Override
+			public long getItemId(int position) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public Object getItem(int position) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public int getCount() {
+				// TODO Auto-generated method stub
+				return 3;
+			}
+		};
+		fld_unit.setAdapter(b);
+		fld_unit.setOnItemSelectedListener(new 
+
+				OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> 
+
+			arg0, View arg1,
+			int pos, long arg3) {
+				// TODO Auto-generated method stub
+				fu = spnr[pos];
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> 
+
+			arg0) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present. 
+
+
+		getMenuInflater().inflate(R.menu.fld_dial1, menu);
+		return true;
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+
+		switch(v.getId())
+		{
+
+		case R.id.btn_done :
+
+			int f1 = 0,f2 = 0,cnt1 = 0,cnt2 = 0;
+			for(int i = 0;i < field_name.getText().length();i++)
+				if(field_name.getText().charAt(i) == ' ')
+					cnt1++;
+			for(int j = 0;j < target.getText().length();j++)
+				if(target.getText().charAt(j) == ' ')
+					cnt2++;
+
+			if(cnt1 ==field_name.getText().length())
+				Toast.makeText(getBaseContext(), "Enter Field Name!!!", Toast.LENGTH_LONG).show();
+
+
+			else if(cnt2 ==target.getText().length())
+				Toast.makeText(getBaseContext(), "Enter target!!!", Toast.LENGTH_LONG).show();
+			else if((!field_name.getText().toString().equals("")) && (!target.getText().toString().equals("")) && cnt2 != target.getText().length() && cnt1 !=field_name.getText().length())
+			{
+				target.setError(null);
+				field_name.setError(null);
+				String fn = field_name.getText().toString();
+				String tg = target.getText().toString();
+				String ft = "--:--:--";
+				db.open();
+				if(check == 1)
+					db.updateRecord1(intent_field_name, fn, fu, tg, ft);
+				else
+					db.insertRecord(fn, fu, tg,ft);
+				db.close();
+				Intent i = new Intent(this,AllFields.class);
+				startActivity(i);
+			}
+			/*			else if(field_name.getText().toString().equals("") && 
+
+					(!target.getText().toString().equals("")))
+			{
+				Toast.makeText(getBaseContext(), "Enter Field Name!!!", Toast.LENGTH_LONG).show();
+				//field_name.setError("Enter Field Name!!!");
+				//target.setError(null);
+			}
+			else if(target.getText().toString().equals("") && (!
+
+					field_name.getText().toString().equals("")))
+			{	
+
+				//field_name.setError(null);
+				Toast.makeText(getBaseContext(), "Enter target!!!", Toast.LENGTH_LONG).show();
+				//field_name.setError("Enter Target!!!");
+			}*/
+			else{
+				Toast.makeText(getBaseContext(), "Enter Valid Fields!!!", Toast.LENGTH_LONG).show();
+			}
+			break;
+
+		case R.id.text_listv:
+
+			Intent ilist = new Intent(this,Units.class);
+			startActivity(ilist);
+			break;
+
+		}
+	}
+	
+/*	public static void brandAlertDialog(AlertDialog dialog) {
+	    try {
+	        Resources resources = dialog.getContext().getResources();
+	        int color = resources.getColor(); // your color here
+
+	        int alertTitleId = resources.getIdentifier("alertTitle", "id", "android");
+	        TextView alertTitle = (TextView) dialog.getWindow().getDecorView().findViewById(alertTitleId);
+	        alertTitle.setTextColor(color); // change title text color
+
+	        int titleDividerId = resources.getIdentifier("titleDivider", "id", "android");
+	        View titleDivider = dialog.getWindow().getDecorView().findViewById(titleDividerId);
+	        titleDivider.setBackgroundColor(color); // change divider color
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	    }
+	}*/
+
+}

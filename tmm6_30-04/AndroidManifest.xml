@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.timemanager"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/CustomActionBarTheme" >
+        <activity
+            android:name="com.example.timemanager.Config"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.timemanager.AllFields"
+            android:label="@string/title_activity_all_fields" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.Config" />
+        </activity>
+        <activity
+            android:name="com.example.timemanager.TimeP"
+            android:label="@string/title_activity_time_p"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" >
+        </activity>
+        <activity
+            android:name="com.example.timemanager.NumberP"
+            android:label="@string/title_activity_number_p"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" >
+        </activity>
+        <activity
+            android:name="com.example.timemanager.DummyFront"
+            android:label="@string/title_activity_dummy_front" >
+        </activity>
+        <activity
+            android:name="com.example.timemanager.FldDial1"
+            android:label="@string/title_activity_fld_dial1"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" >
+        </activity>
+        <activity
+            android:name="com.example.timemanager.Units"
+            android:label="@string/title_activity_units"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" >
+        </activity>
+        <activity
+            android:name="com.example.timemanager.DecNumberP"
+            android:label="@string/title_activity_dec_number_p"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" >
+        </activity>
+        <activity
+            android:name="com.example.timemanager.ResetActivity"
+            android:label="@string/title_activity_reset" >
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    
+    <item android:id="@+id/add_del"
+          android:icon="@android:drawable/ic_menu_delete"
+          
+          android:showAsAction="ifRoom" />
+    <item android:id="@+id/add_flds"
+          android:icon="@android:drawable/ic_menu_add"
+          android:showAsAction="ifRoom" />
+    
+    
+
+</menu>
